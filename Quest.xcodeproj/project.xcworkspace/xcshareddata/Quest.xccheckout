@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>23E169E3-A8CD-4629-A12E-B074C9A60EED</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Quest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>089C90BF-9A95-4044-93EA-B9A362FC2E1A</key>
+		<string>https://github.com/ferologics/Quest.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Quest.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>089C90BF-9A95-4044-93EA-B9A362FC2E1A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ferologics/Quest.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>089C90BF-9A95-4044-93EA-B9A362FC2E1A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>089C90BF-9A95-4044-93EA-B9A362FC2E1A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Quest</string>
+		</dict>
+	</array>
+</dict>
+</plist>

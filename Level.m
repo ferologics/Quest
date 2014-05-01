@@ -284,12 +284,45 @@
 }
 
 -(void) tapToSwithToSecond:(UITapGestureRecognizer*) recogniser {
-        NSLog(@"switched to second");
+    [self switchOrder:2];
+
 }
 
 -(void) tapToSwitchToThird:(UITapGestureRecognizer*) recogniser {
-        NSLog(@"switched to third ");
+    [self switchOrder:3];
 }
+
+#pragma mark Swithing Leaders
+
+-(void) switchOrder:(int)cycle {
+    
+    __block unsigned char i = 1;
+    
+    [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
+        
+        Character* character = (Character*)node;
+        
+        if (character != leader && i < cycle) {
+            
+            if (character.followingEnabled == YES) {
+                
+                NSLog(@"switch occuring");
+                i++;
+                leader.isLeader = NO;
+                leader.followingEnabled = YES;
+                leader = nil;
+                leader = character;
+                character.isLeader = YES;
+                [character makeLeader];
+                [myWorld insertChild:leader atIndex:0];
+            }
+            
+        }
+    }];
+    
+    
+}
+
 
 #pragma mark STOP ALL CHARACTERS
 
