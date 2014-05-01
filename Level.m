@@ -135,11 +135,11 @@
         [self debugPath:mapWithSmallerRect];
     }
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    /*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
         map.xScale = .5;
         map.yScale = .5;
-    }
+    }*/
 }
 
 -(void) debugPath: (CGRect) theRect {
@@ -378,15 +378,19 @@
     
 }
 
--(void) stopAllPlayersFromCollision {
+-(void) stopAllPlayersFromCollision:(SKNode*)damagedNode {
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     [myWorld enumerateChildNodesWithName:@"caracter" usingBlock:^(SKNode *node, BOOL *stop) {
         
         Character* character = (Character*) node;
-        [character stopMoving];
         
+        if (character == damagedNode) {
+            [character stopMovingFromGettingHit];
+        } else {
+            [character stopMoving];
+        }
     }];
     
 }
@@ -522,10 +526,11 @@
         if (firstBody.categoryBitMask == playerCategory) {
             Character* character = (Character*) firstBody.node;
             [character doDamageWithAmount:levelBorderCausesDamageBy];
-            [self stopAllPlayersFromCollision];
+            [self stopAllPlayersFromCollision:character];
         } else if (secondBody.categoryBitMask == playerCategory) {
             Character* character = (Character*) secondBody.node;
             [character doDamageWithAmount:levelBorderCausesDamageBy];
+            [self stopAllPlayersFromCollision:character];
         }
         
     }

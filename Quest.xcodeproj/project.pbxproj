@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07179E7B190E89BA008786FC /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 07179E79190E89BA008786FC /* Spark.sks */; };
 		07179E7C190E89BA008786FC /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 07179E7A190E89BA008786FC /* spark.png */; };
+		07630B6E1912925200F4F1C0 /* DeathFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = 07630B6D1912925200F4F1C0 /* DeathFire.sks */; };
 		07B5065E184F80D400D15168 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B5065D184F80D400D15168 /* Foundation.framework */; };
 		07B50660184F80D500D15168 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B5065F184F80D500D15168 /* CoreGraphics.framework */; };
 		07B50662184F80D500D15168 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B50661184F80D500D15168 /* UIKit.framework */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		07179E79190E89BA008786FC /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
 		07179E7A190E89BA008786FC /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		07630B6D1912925200F4F1C0 /* DeathFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeathFire.sks; sourceTree = "<group>"; };
 		07B5065A184F80D400D15168 /* Quest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07B5065D184F80D400D15168 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		07B5065F184F80D500D15168 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -158,6 +160,7 @@
 				07B5069D184FAE7500D15168 /* Level.m */,
 				07B506A2184FAFCC00D15168 /* Character.h */,
 				07B506A3184FAFCC00D15168 /* Character.m */,
+				07630B6D1912925200F4F1C0 /* DeathFire.sks */,
 				07B5069F184FAF5700D15168 /* StartMenu.h */,
 				07B506A0184FAF5700D15168 /* StartMenu.m */,
 				07B506AA184FB3FE00D15168 /* Images.xcassets */,
@@ -278,6 +281,7 @@
 			files = (
 				07B506A9184FB12B00D15168 /* GameData.plist in Resources */,
 				07179E7C190E89BA008786FC /* spark.png in Resources */,
+				07630B6E1912925200F4F1C0 /* DeathFire.sks in Resources */,
 				07B506AD184FB47A00D15168 /* front.atlas in Resources */,
 				07B506AB184FB3FE00D15168 /* Images.xcassets in Resources */,
 				07B50676184F80D500D15168 /* Main_iPad.storyboard in Resources */,

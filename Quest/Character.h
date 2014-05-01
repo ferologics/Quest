@@ -30,6 +30,7 @@
 -(void) doDamageWithAmount:(float)amount;
 -(int) returnDirection;
 -(void) stopMoving;
+-(void) stopMovingFromGettingHit;
 -(void) stopInFormation:(int)direction andPlaceInLine:(int)place leaderLocation:(CGPoint)location;
 -(void) followInFormationWithDirection:(int)direction withPlace:(int)place andLeaderPosition:(CGPoint)location;
 

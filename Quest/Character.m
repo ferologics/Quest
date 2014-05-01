@@ -127,12 +127,12 @@
         [self setUpPhysics];
     }
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    /*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
         self.xScale = .5;
         self.yScale = .5;
         speed       = 3;
-    }
+    }*/
 }
 
 -(void) setUpHealthMeter {
@@ -470,6 +470,7 @@
             break;
         case noDirection:
             // in case you want to do something for noDirection
+            [self stopMoving];
             break;
         default:
             break;
@@ -507,9 +508,7 @@ CGFloat RadiansToDegrees(CGFloat radians)
             
         } else {
             character.zRotation = DegreesToRadians(-90);
-        
         }
-        
         currentDirection = left;
     }
 }
@@ -531,7 +530,6 @@ CGFloat RadiansToDegrees(CGFloat radians)
             
         } else {
             character.zRotation = DegreesToRadians(90);
-            
         }
         currentDirection = right;
     }
@@ -577,7 +575,6 @@ CGFloat RadiansToDegrees(CGFloat radians)
 
 -(void) followInFormationWithDirection:(int)direction withPlace:(int)place andLeaderPosition:(CGPoint)location {
     
-    
     if (_followingEnabled == YES){
 
     int paddingX = character.frame.size.width / 1.15;
@@ -613,6 +610,11 @@ CGFloat RadiansToDegrees(CGFloat radians)
     
     [character removeAllActions];
 
+}
+
+-(void) stopMovingFromGettingHit {
+    [character removeAllActions];
+    
 }
 
 -(void) stopInFormation:(int)direction andPlaceInLine:(int)place leaderLocation:(CGPoint)location{
@@ -747,17 +749,78 @@ CGFloat RadiansToDegrees(CGFloat radians)
     _currentHealth = _currentHealth - amount;
     [self childNodeWithName:@"green"].xScale = _currentHealth/_maxHealth;
     
+    // just to prevent the green healthbar from being inverted
+    if (_currentHealth <= 0) {
+     
+        _currentHealth = 0;
+        [self childNodeWithName:@"green"].xScale = _currentHealth/_maxHealth;
+    }
+    
+    [self performSelector:@selector(damageActions) withObject:nil afterDelay:0.05];
+}
+
+-(void) damageActions {
+    
+    SKAction* push;
+    
+    switch (currentDirection) {
+        case up:
+            push = [SKAction moveByX:0 y:-100 duration:0.25];
+            break;
+        case down:
+            push = [SKAction moveByX:0 y:100 duration:0.25];
+            break;
+        case left:
+            push = [SKAction moveByX:100 y:0 duration:0.25];
+            break;
+        case right:
+            push = [SKAction moveByX:-100 y:0 duration:0.25];
+            break;
+        default:
+            break;
+    }
+    
+    [self runAction:push];
+    [self performSelector:@selector(pulseRedAfterDamage) withObject:nil afterDelay:0.0];
+    [self performSelector:@selector(damageDone) withObject:nil afterDelay:0.41];
+}
+
+-(void) pulseRedAfterDamage {
+    
+    SKAction* pulseRed = [SKAction sequence:@[
+                                              [SKAction colorizeWithColor:[SKColor redColor] colorBlendFactor:1.0 duration:0.2],
+                                              [SKAction colorizeWithColorBlendFactor:0.0 duration:0.2],
+                                              ]];
+    [character runAction:pulseRed];
+}
+
+-(void) damageDone {
+    currentDirection = noDirection;
+    
     if (_currentHealth <= 0) {
         
         [self enumerateChildNodesWithName:@"*" usingBlock:^(SKNode *node, BOOL *stop) {
-            
-            [node removeFromParent];
-            
+            [node performSelector:@selector(removeFromParent) withObject:nil afterDelay:0.05];
         }];
-        
-        [self removeFromParent];
+        [self deathEmmiter];
+        [self performSelector:@selector(removeFromParent) withObject:nil afterDelay:1.5];
     }
+}
+
+-(void) deathEmmiter {
+    
+    NSString* pathToEmitter = [[NSBundle mainBundle] pathForResource:@"DeathFire" ofType:@"sks"];
+    SKEmitterNode* emitter = [NSKeyedUnarchiver unarchiveObjectWithFile:pathToEmitter];
+    emitter.zPosition = 150;
+    emitter.position = CGPointMake(0, - (character.frame.size.height/2) +10);
+    emitter.numParticlesToEmit = 400;
+    [self addChild:emitter];
     
 }
+
+
+
+
+
 
 @end
