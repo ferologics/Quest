@@ -50,21 +50,6 @@
         currentLevel      = 0;// later on we will create a singleton to hold game data that is independent of this class
         charactersInWorld = 0;
         
-        /* Setup your scene here
-        
-        self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
-        
-        SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
-        
-        myLabel.text = @"Hello Level!";
-        myLabel.fontSize = 30;
-        myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                       CGRectGetMidY(self.frame));
-        
-        [self addChild:myLabel];
-        
-        */
-        
         [self setUpScene];
         [self performSelector:@selector(setUpCharacters) withObject:nil afterDelay:2.0];
     }
@@ -101,8 +86,36 @@
 
     useDelayedFollow                    = [[levelDict objectForKey:@"UseDelayedFollow"] boolValue];
     followDelay                         = [[levelDict objectForKey:@"FollowDelay"] floatValue];
-    levelBorderCausesDamageBy           = [[levelDict objectForKey:@"LevelBorderCausesDamageBy"] integerValue];
+    levelBorderCausesDamageBy           = [[levelDict objectForKey:@"LevelBorderCausesDamageBy"] intValue];
+    
+    // setUp Instructions
+    
+    SKNode* instructionNode = [SKNode node];
+    instructionNode.name = @"instructions";
+    [myWorld addChild:instructionNode];
+    instructionNode.position = CGPointMake(0, 0);
+    instructionNode.zPosition = 50;
 
+    
+    SKLabelNode* label1 = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    label1.text     = @"Swipe to Move, Rotate to Stop";
+    label1.fontSize = 22;
+    label1.position = CGPointMake(0, 50);
+
+    SKLabelNode* label2 = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    label2.text     = @"Touch with 2 or 3 Fingers to Swap Leader";
+    label2.fontSize = 22;
+    label2.position = CGPointMake(0, -50);
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        label1.fontSize = 12;
+        label2.fontSize = 12;
+    }
+
+    [instructionNode addChild:label1];
+    [instructionNode addChild:label2];
+    
     //setup Physics
 
     float schrinkage                    = [[levelDict objectForKey:@"ShrinkBackgroundBorderBy"] floatValue];
@@ -122,6 +135,11 @@
         [self debugPath:mapWithSmallerRect];
     }
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        map.xScale = .5;
+        map.yScale = .5;
+    }
 }
 
 -(void) debugPath: (CGRect) theRect {
@@ -225,6 +243,7 @@
         place++;
     }];
 }
+
 -(void) handleSwipeDown:(UISwipeGestureRecognizer*) recogniser {
 
     place = 0;
@@ -323,14 +342,11 @@
     
 }
 
-
 #pragma mark STOP ALL CHARACTERS
 
 -(void) handleRotation:(UISwipeGestureRecognizer*) recogniser {
     if (recogniser.state == UIGestureRecognizerStateEnded) {
-        
-        NSLog(@"rotated");
-    [self stopAllCharactersAndPutIntoLine];
+        [self stopAllCharactersAndPutIntoLine];
     }
 }
 
@@ -375,7 +391,6 @@
     
 }
 
-
 #pragma mark Scene moved from view
 
 -(void) willMoveFromView:(SKView *)view {
@@ -392,10 +407,18 @@
     [view removeGestureRecognizer:rotationGR];
 }
 
+-(void) fadeToDeath:(SKNode*)node {
+    
+    SKAction* fade     = [SKAction fadeAlphaTo:0 duration:10];
+    SKAction* remove   = [SKAction performSelector:@selector(removeFromParent) onTarget:node];
+    SKAction* sequence = [SKAction sequence:@[fade, remove]];
+    [node runAction:sequence];
+}
+
 #pragma mark setUpCharacters
 
 -(void) setUpCharacters {
-    
+    [self fadeToDeath:[myWorld childNodeWithName:@"instructions"]];
     leader = [Character node];
     [leader createWithDictionary: [characterArray objectAtIndex:0]];
     [leader makeLeader];

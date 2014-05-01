@@ -75,11 +75,11 @@
     
     speed            = [[characterData objectForKey:@"Speed"] floatValue];
     particleDelay    = [[characterData objectForKey:@"ParticleDelay"] floatValue];
-    particlesToEmitt = [[characterData objectForKey:@"ParticlesToEmitt"] integerValue];
+    particlesToEmitt = [[characterData objectForKey:@"ParticlesToEmitt"] intValue];
     
     //TEXTURES....
     
-    FPS = [[charData objectForKey:@"FPS"] integerValue];
+    FPS = [[charData objectForKey:@"FPS"] intValue];
     
     useBackViewFrames    = [[charData objectForKey:@"UseBackViewFrames"] boolValue];
     useFrontViewFrames   = [[charData objectForKey:@"UseFrontViewFrames"] boolValue];
@@ -127,13 +127,12 @@
         [self setUpPhysics];
     }
     
-    
-    /*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
-        self.xScale = .75;
-        self.yScale = .75;
+        self.xScale = .5;
+        self.yScale = .5;
+        speed       = 3;
     }
-    */
 }
 
 -(void) setUpHealthMeter {
@@ -165,10 +164,10 @@
     
     if ([[characterData objectForKey:@"CollisionBodyType" ] isEqualToString:@"square"]) {
         collisionBodyType = squareType;
-        self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:newSize];
+        self.physicsBody  = [SKPhysicsBody bodyWithRectangleOfSize:newSize];
     }else{
         collisionBodyType = circleType;
-        self.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:newSize.width / 2 ];
+        self.physicsBody  = [SKPhysicsBody bodyWithCircleOfRadius:newSize.width / 2 ];
     }
     if ([[characterData objectForKey:@"DebugBody"] boolValue]) {
         CGRect rect = CGRectMake(-( newSize.width / 2 ), -( newSize.height /2), newSize.width, newSize.height);
@@ -214,6 +213,7 @@
 #pragma mark SetUp Rest/Walk Frames
 
 -(void) setUpWalkFront {
+    id object;
     
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"WalkFrontAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"WalkFrontFrames"]];
@@ -221,7 +221,7 @@
     
     unsigned char count = 0;
     
-    for (id object in array) {
+    for (object in array) {
         SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
@@ -232,14 +232,15 @@
     
 }
 -(void) setUpWalkBack {
-    
+    id object;
+
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"WalkBackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"WalkBackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
     
-    for (id object in array) {
+    for (object in array) {
         SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
@@ -250,23 +251,25 @@
     
 }
 -(void) setUpWalkSide {
-    
+    id object;
+
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"WalkSideAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"WalkSideFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
     
-    for (id object in array) {
+    for (object in array) {
         SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
     
     SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
-    walkSideAction          = [SKAction repeatActionForever:atlasAnimation];
+    walkSideAction           = [SKAction repeatActionForever:atlasAnimation];
 }
 -(void) setUpRest {
+    id object;
 
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"RestingAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"RestingFrames"]];
@@ -274,7 +277,7 @@
     
     unsigned char count = 0;
     
-    for (id object in array) {
+    for (object in array) {
         SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
@@ -290,14 +293,15 @@
 #pragma mark SetUp Attack Frames
 
 -(void) setUpAttackFront {
-    
+    id object;
+
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"FrontAttackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"FrontAttackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
     
-    for (id object in array) {
+    for (object in array) {
         SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
@@ -317,14 +321,15 @@
     
 }
 -(void) setUpAttackSide {
-    
+    id object;
+
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"SideAttackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"SideAttackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
     
-    for (id object in array) {
+    for (object in array) {
         SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
@@ -345,14 +350,15 @@
     
 }
 -(void) setUpAttackBack {
-    
+    id object;
+
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"BackAttackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"BackAttackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
     
-    for (id object in array) {
+    for (object in array) {
         SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
@@ -369,8 +375,6 @@
         
         backAttackAction = [SKAction repeatAction:atlasAnimation count:1];
     }
-    
-    
 }
 
 #pragma mark Methods To Run Actions
@@ -418,9 +422,6 @@
         [character runAction:walkSideAction];
     }
 }
-
-
-
 
 #pragma mark Update
 
@@ -472,10 +473,9 @@
             break;
         default:
             break;
-    } // switch (currentDirection) {
+        } // switch (currentDirection) {
         
     } // if (_followingEnabled == YES && _isLeader == YES) {
-    
 }
 
 #pragma mark Handle Movement
@@ -488,11 +488,12 @@ CGFloat RadiansToDegrees(CGFloat radians)
 {
     return radians * 180 / M_PI;
 }
+
 -(void) moveLeftWithPlace:(NSNumber*) place{
     
     if (_followingEnabled == YES || _isLeader == YES){
         
-        self.zPosition = 100 - [place integerValue]; // converts NSNumber to int
+        self.zPosition = 100 - [place intValue]; // converts NSNumber to int
         
         if (useSideViewFrames == YES) {
             
@@ -517,7 +518,7 @@ CGFloat RadiansToDegrees(CGFloat radians)
     
     if (_followingEnabled == YES || _isLeader == YES){
         
-        self.zPosition   = 100 - [place integerValue];
+        self.zPosition   = 100 - [place intValue];
         character.xScale = 1;// basicaly just flipps the character on X axis or restores it back
 
         if (useSideViewFrames == YES) {
@@ -540,7 +541,7 @@ CGFloat RadiansToDegrees(CGFloat radians)
     
     if (_followingEnabled == YES || _isLeader == YES){
 
-        self.zPosition   = 100 + [place integerValue];
+        self.zPosition   = 100 + [place intValue];
         character.xScale = 1;// basicaly just flipps the character on X axis or restores it back
         
         if (useBackViewFrames == YES) {
@@ -562,7 +563,7 @@ CGFloat RadiansToDegrees(CGFloat radians)
     
     if (_followingEnabled == YES || _isLeader == YES){
         
-        self.zPosition      = 100 - [place integerValue];
+        self.zPosition      = 100 - [place intValue];
         character.xScale    = 1;// basicaly just flipps the character on X axis or restores it back
         character.zRotation = DegreesToRadians(0);
         
@@ -758,24 +759,5 @@ CGFloat RadiansToDegrees(CGFloat radians)
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @end
