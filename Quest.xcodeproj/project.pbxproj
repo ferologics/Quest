@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07179E7B190E89BA008786FC /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 07179E79190E89BA008786FC /* Spark.sks */; };
+		07179E7C190E89BA008786FC /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 07179E7A190E89BA008786FC /* spark.png */; };
 		07B5065E184F80D400D15168 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B5065D184F80D400D15168 /* Foundation.framework */; };
 		07B50660184F80D500D15168 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B5065F184F80D500D15168 /* CoreGraphics.framework */; };
 		07B50662184F80D500D15168 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B50661184F80D500D15168 /* UIKit.framework */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07179E79190E89BA008786FC /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
+		07179E7A190E89BA008786FC /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		07B5065A184F80D400D15168 /* Quest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07B5065D184F80D400D15168 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		07B5065F184F80D500D15168 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -144,10 +148,12 @@
 				07B5066F184F80D500D15168 /* AppDelegate.m */,
 				07B50671184F80D500D15168 /* Main_iPhone.storyboard */,
 				07B50674184F80D500D15168 /* Main_iPad.storyboard */,
-				07B50677184F80D500D15168 /* ViewController.h */,
 				07B50678184F80D500D15168 /* ViewController.m */,
+				07B50677184F80D500D15168 /* ViewController.h */,
 				07B506A7184FB09B00D15168 /* constants.h */,
 				07B506A8184FB12B00D15168 /* GameData.plist */,
+				07179E79190E89BA008786FC /* Spark.sks */,
+				07179E7A190E89BA008786FC /* spark.png */,
 				07B5069C184FAE7500D15168 /* Level.h */,
 				07B5069D184FAE7500D15168 /* Level.m */,
 				07B506A2184FAFCC00D15168 /* Character.h */,
@@ -271,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07B506A9184FB12B00D15168 /* GameData.plist in Resources */,
+				07179E7C190E89BA008786FC /* spark.png in Resources */,
 				07B506AD184FB47A00D15168 /* front.atlas in Resources */,
 				07B506AB184FB3FE00D15168 /* Images.xcassets in Resources */,
 				07B50676184F80D500D15168 /* Main_iPad.storyboard in Resources */,
@@ -278,6 +285,7 @@
 				07B506B3184FB4BD00D15168 /* side.atlas in Resources */,
 				07B50673184F80D500D15168 /* Main_iPhone.storyboard in Resources */,
 				07B5066A184F80D500D15168 /* InfoPlist.strings in Resources */,
+				07179E7B190E89BA008786FC /* Spark.sks in Resources */,
 				07B506B1184FB4B300D15168 /* back.atlas in Resources */,
 				07B506AF184FB4AA00D15168 /* blob.atlas in Resources */,
 			);
@@ -443,7 +451,7 @@
 				INFOPLIST_FILE = "Quest/Quest-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -458,7 +466,7 @@
 				INFOPLIST_FILE = "Quest/Quest-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

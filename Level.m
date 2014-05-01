@@ -9,6 +9,7 @@
 #import "Level.h"
 #import "constants.h"
 #import "Character.h"
+#import "StartMenu.h"
 
 @interface Level () {
     
@@ -24,6 +25,7 @@
     UIRotationGestureRecognizer* rotationGR;
     
     int currentLevel;
+    int levelBorderCausesDamageBy;
     unsigned char charactersInWorld; // can be 0 to 255
     
     SKNode* myWorld;
@@ -31,8 +33,11 @@
     
     NSArray* characterArray;
     
+    BOOL gameHasBegun;
     BOOL useDelayedFollow;
     float followDelay;
+    __block unsigned char place;
+
 }
 @end
 
@@ -41,6 +46,7 @@
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         
+        gameHasBegun      = NO;
         currentLevel      = 0;// later on we will create a singleton to hold game data that is independent of this class
         charactersInWorld = 0;
         
@@ -95,6 +101,7 @@
 
     useDelayedFollow                    = [[levelDict objectForKey:@"UseDelayedFollow"] boolValue];
     followDelay                         = [[levelDict objectForKey:@"FollowDelay"] floatValue];
+    levelBorderCausesDamageBy           = [[levelDict objectForKey:@"LevelBorderCausesDamageBy"] integerValue];
 
     //setup Physics
 
@@ -173,12 +180,12 @@
 }
 
 -(void) handleSwipeLeft:(UISwipeGestureRecognizer*) recogniser {
-        NSLog(@"left ");
-    
-        __block unsigned char place = 0;
+
+    place = 0;
     
         [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
             //do something if we find character inside MyWorld
+            gameHasBegun = YES;
             
             Character *character = (Character*) node; //casting the character, nie [character node] ale (Character*) node!!! -.-"
             
@@ -192,16 +199,16 @@
                 }
             }
             place++;
-            
         }];
 }
 
 -(void) handleSwipeRight:(UISwipeGestureRecognizer*) recogniser {
-        NSLog(@"right ");
-    __block unsigned char place = 0;
+
+    place = 0;
     
     [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
         //do something if we find character inside MyWorld
+        gameHasBegun = YES;
         
         Character *character = (Character*) node; //casting the character, nie [character node] ale (Character*) node!!! -.-"
         
@@ -219,12 +226,13 @@
     }];
 }
 -(void) handleSwipeDown:(UISwipeGestureRecognizer*) recogniser {
-        NSLog(@"down ");
-    __block unsigned char place = 0;
-    
+
+    place = 0;
+
     [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
         //do something if we find character inside MyWorld
-        
+        gameHasBegun = YES;
+
         Character *character = (Character*) node; //casting the character, nie [character node] ale (Character*) node!!! -.-"
         
         if (character == leader) {
@@ -242,12 +250,13 @@
 }
 
 -(void) handleSwipeUp:(UISwipeGestureRecognizer*) recogniser {
-        NSLog(@"up ");
-    __block unsigned char place = 0;
-    
+
+    place = 0;
+
     [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
         //do something if we find character inside MyWorld
-        
+        gameHasBegun = YES;
+
         Character *character = (Character*) node; //casting the character, nie [character node] ale (Character*) node!!! -.-"
         
         if (character == leader) {
@@ -265,7 +274,13 @@
 }
 
 -(void) tapedOnce:(UITapGestureRecognizer*) recogniser {
-        NSLog(@"singleTap ");
+    
+    [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
+        Character *character = (Character*) node;
+        [character attack];
+        
+    }];
+    
 }
 
 -(void) tapToSwithToSecond:(UITapGestureRecognizer*) recogniser {
@@ -291,7 +306,7 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     __block unsigned char leaderDirection;
-    __block unsigned char place = 0;
+    place = 0;
     
     [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
         //do something if we find character inside MyWorld
@@ -310,11 +325,25 @@
         }
         
         place++;
+    }];
+    
+}
+
+-(void) stopAllPlayersFromCollision {
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    [myWorld enumerateChildNodesWithName:@"caracter" usingBlock:^(SKNode *node, BOOL *stop) {
+        
+        Character* character = (Character*) node;
+        [character stopMoving];
         
     }];
     
 }
 
+
+#pragma mark Scene moved from view
 
 -(void) willMoveFromView:(SKView *)view {
     
@@ -366,6 +395,9 @@
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     
+    __block BOOL anyNonLeaderFoundInPlay = NO;
+    __block BOOL leaderFound             = NO;
+    
     [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
         //do something if we find character inside MyWorld
         
@@ -376,18 +408,47 @@
             
             if (character == leader) {
                 
-                //do something
+                leaderFound = YES;
                 
             } else if (character.followingEnabled == YES){
+                
+                anyNonLeaderFoundInPlay = YES;
                 
                 character.idealX = leader.position.x;
                 character.idealY = leader.position.y;
             }
             
-            [character update];
+            [character update:place];
         }
         
     }];
+    // outside of the enumeration block, we then test for a leader or follower
+    
+    if (leaderFound == NO && gameHasBegun == YES) {
+        
+        if (anyNonLeaderFoundInPlay == YES) {
+            
+            NSLog(@"Leader not found, assigning new one");
+            
+            [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
+               
+                Character* character = (Character*) node;
+                if (character.followingEnabled == YES) {
+                    
+                leader = character;
+                [leader makeLeader];
+                [myWorld insertChild:leader atIndex:0];
+                
+                }
+                
+            }];
+        } else {
+            
+            NSLog(@"game over");
+            gameHasBegun = NO;
+            [self gameOver];
+        }
+    }
 
 }
 
@@ -401,7 +462,16 @@
     secondBody = contact.bodyB;
     
     if (firstBody.categoryBitMask == wallCategory || secondBody.categoryBitMask == wallCategory) {
-        NSLog(@"HEYY someone hit the wall");
+        
+        if (firstBody.categoryBitMask == playerCategory) {
+            Character* character = (Character*) firstBody.node;
+            [character doDamageWithAmount:levelBorderCausesDamageBy];
+            [self stopAllPlayersFromCollision];
+        } else if (secondBody.categoryBitMask == playerCategory) {
+            Character* character = (Character*) secondBody.node;
+            [character doDamageWithAmount:levelBorderCausesDamageBy];
+        }
+        
     }
     
     if (firstBody.categoryBitMask == playerCategory && secondBody.categoryBitMask == playerCategory) {
@@ -426,6 +496,21 @@
         }
     }
         
+}
+
+#pragma mark GAME OVER MAN
+
+-(void) gameOver {
+    
+    [myWorld enumerateChildNodesWithName:@"*" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node removeFromParent];
+    }];
+    
+    [myWorld removeFromParent];
+    
+    SKScene* nextScene = [[StartMenu alloc] initWithSize:self.size];
+    SKTransition* fade =  [SKTransition fadeWithColor:[SKColor blackColor] duration:1.5];
+    [self.view presentScene:nextScene transition:fade];
 }
 
 #pragma mark Camera Center

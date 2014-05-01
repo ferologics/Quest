@@ -7,6 +7,7 @@
 //
 
 #import "StartMenu.h"
+#import "Level.h"
 
 @implementation StartMenu
 
@@ -18,18 +19,28 @@
         
         SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
 
-        myLabel.text         = @"Start Menu";
+        myLabel.text         = @"Restarting Level!";
         myLabel.fontSize     = 30;
         myLabel.position     = CGPointMake(CGRectGetMidX(self.frame),
                                        CGRectGetMidY(self.frame));
         
         [self addChild:myLabel];
+        [self performSelector:@selector(playAgain) withObject:nil afterDelay:3.0];
+         
     }
     return self;
 }
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+}
+
+-(void) playAgain {
+    
+    SKScene* nextScene = [[Level alloc] initWithSize:self.size];
+    SKTransition* fade =  [SKTransition fadeWithColor:[SKColor redColor] duration:1.5];
+    [self.view presentScene:nextScene transition:fade];
+    
 }
 
 @end

@@ -15,14 +15,19 @@
     
     NSDictionary* characterData;
     
-    BOOL useForCollisions;
+
     float collisionBodyCoversWhatPercent;
+    float particleDelay;
+    float speed;
+    
+    int particlesToEmitt;
     
     unsigned char collisionBodyType;
-    unsigned char speed;
     unsigned char currentDirection;
     unsigned char FPS; //range is 1-255 bu really we want this to be 1-60
     
+    BOOL useForCollisions;
+    BOOL doesAttackWhenNotLeader;
     BOOL useFrontViewFrames;
     BOOL useRestingFrames;
     BOOL useSideViewFrames;
@@ -30,6 +35,7 @@
     BOOL useFrontAttackFrames;
     BOOL useSideAttackFrames;
     BOOL useBackAttackFrames;
+    BOOL useAttackParticle;
     
     SKAction* walkBackAction;
     SKAction* walkFrontAction;
@@ -67,44 +73,55 @@
     
     [self addChild:character];
     
-    speed = [[characterData objectForKey:@"Speed"] charValue];
+    speed            = [[characterData objectForKey:@"Speed"] floatValue];
+    particleDelay    = [[characterData objectForKey:@"ParticleDelay"] floatValue];
+    particlesToEmitt = [[characterData objectForKey:@"ParticlesToEmitt"] integerValue];
     
     //TEXTURES....
     
     FPS = [[charData objectForKey:@"FPS"] integerValue];
     
-    useFrontViewFrames   = [[charData objectForKey:@"UseFrontViewFrames"] boolValue];
     useBackViewFrames    = [[charData objectForKey:@"UseBackViewFrames"] boolValue];
+    useFrontViewFrames   = [[charData objectForKey:@"UseFrontViewFrames"] boolValue];
     useSideViewFrames    = [[charData objectForKey:@"UseSideViewFrames"] boolValue];
-    useFrontAttackFrames = [[charData objectForKey:@"UseFrontAttackFrames"] boolValue];
-    useSideAttackFrames  = [[charData objectForKey:@"UseSideAttackFrames"] boolValue];
-    useBackAttackFrames  = [[charData objectForKey:@"UseBackAttackFrames"] boolValue];
     useRestingFrames     = [[charData objectForKey:@"UseRestingFrames"] boolValue];
+    useSideAttackFrames  = [[charData objectForKey:@"UseSideAttackFrames"] boolValue];
+    useFrontAttackFrames = [[charData objectForKey:@"UseFrontAttackFrames"] boolValue];
+    useBackAttackFrames  = [[charData objectForKey:@"UseBackAttackFrames"] boolValue];
+    useAttackParticle    = [[charData objectForKey:@"UseAttackParticles"] boolValue];
     
-    if (useFrontViewFrames == YES) {
-        [self setUpWalkFront];
+    _hasOwnHealth = [[characterData objectForKey:@"HasOwnHealth"] boolValue];
+    
+    if (_hasOwnHealth == YES) {
+        [self setUpHealthMeter];
     }
-    if (useBackViewFrames == YES) {
-        [self setUpWalkBack];
-    }
-    if (useSideViewFrames == YES) {
-        [self setUpWalkSide];
-    }
-    if (useFrontAttackFrames == YES) {
-        [self setUpAttackFront];
-    }
-    if (useSideAttackFrames == YES) {
-        [self setUpAttackSide];
-    }
-    if (useBackAttackFrames == YES) {
-        [self setUpAttackBack];
-    }
+
     if (useRestingFrames == YES) {
         [self setUpRest];
+    
+    } else if (useBackViewFrames == YES) {
+        [self setUpWalkBack];
+    
+    } else if (useSideViewFrames == YES) {
+        [self setUpWalkSide];
+    
+    } else if (useFrontViewFrames == YES) {
+        [self setUpWalkFront];
+    
+    } else if (useFrontAttackFrames == YES) {
+        [self setUpAttackFront];
+    
+    } else if (useSideAttackFrames == YES) {
+        [self setUpAttackSide];
+    
+    } else if (useBackAttackFrames == YES) {
+        [self setUpAttackBack];
     }
 
     _followingEnabled = [[characterData objectForKey:@"FollowingEnabled"] boolValue];
     useForCollisions  = [[characterData objectForKey:@"UseForCollisions"] boolValue];
+    
+    doesAttackWhenNotLeader = [[characterData objectForKey:@"DoesAttackWhenNotLeader"] boolValue];
     
     if (useForCollisions == YES) {
         [self setUpPhysics];
@@ -118,6 +135,26 @@
     }
     */
 }
+
+-(void) setUpHealthMeter {
+    
+    _maxHealth = [[characterData objectForKey:@"Health"] floatValue];
+    _currentHealth = _maxHealth;
+    
+    SKSpriteNode* healthBar = [SKSpriteNode spriteNodeWithImageNamed:@"healthbar"];
+    healthBar.zPosition = 200;
+    healthBar.position = CGPointMake(0, character.frame.size.height / 2);
+    [self addChild:healthBar];
+    
+    SKSpriteNode* green = [SKSpriteNode spriteNodeWithImageNamed:@"green"];
+    green.zPosition = 201;
+    green.position = CGPointMake( - (green.frame.size.width / 2), character.frame.size.height / 2);
+    green.anchorPoint = CGPointMake(0.0, 0.5);
+    green.name = @"green";
+    [self addChild:green];
+    
+}
+
 
 #pragma mark Set Up Physics
 
@@ -177,159 +214,162 @@
 #pragma mark SetUp Rest/Walk Frames
 
 -(void) setUpWalkFront {
-    id object;
     
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"WalkFrontAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"WalkFrontFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
-    for (object in array) {
-        SKTexture* texture = [atlas textureNamed:[array objectAtIndex:count]];
+    
+    for (id object in array) {
+        SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
     
-    SKAction* atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
+    SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     walkFrontAction          = [SKAction repeatActionForever:atlasAnimation];
-
     
 }
 -(void) setUpWalkBack {
-    id object;
     
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"WalkBackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"WalkBackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
-    for (object in array) {
-        SKTexture* texture = [atlas textureNamed:[array objectAtIndex:count]];
+    
+    for (id object in array) {
+        SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
     
-    SKAction* atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
+    SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     walkBackAction           = [SKAction repeatActionForever:atlasAnimation];
-
     
 }
 -(void) setUpWalkSide {
-    id object;
     
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"WalkSideAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"WalkSideFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
-    for (object in array) {
-        SKTexture* texture = [atlas textureNamed:[array objectAtIndex:count]];
+    
+    for (id object in array) {
+        SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
-
-    SKAction* atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
-    walkSideAction           = [SKAction repeatActionForever:atlasAnimation];
-
+    
+    SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
+    walkSideAction          = [SKAction repeatActionForever:atlasAnimation];
 }
 -(void) setUpRest {
-    id object;
-    
+
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"RestingAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"RestingFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
-    for (object in array) {
-        SKTexture* texture = [atlas textureNamed:[array objectAtIndex:count]];
+    
+    for (id object in array) {
+        SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
-    
-    SKAction* atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
-    SKAction* wait           = [SKAction waitForDuration:0.5];
-    SKAction* sequence       = [SKAction sequence:@[atlasAnimation, wait]];
-    repeatRestAction         = [SKAction repeatActionForever:sequence];
 
+    SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
+    SKAction *wait           = [SKAction waitForDuration:0.5];
+    SKAction *sequence       = [SKAction sequence:@[atlasAnimation, wait]];
+    repeatRestAction         = [SKAction repeatActionForever:sequence];
+    
 }
 
 #pragma mark SetUp Attack Frames
 
 -(void) setUpAttackFront {
-    id object;
-
+    
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"FrontAttackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"FrontAttackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
-    for (object in array) {
-        SKTexture* texture = [atlas textureNamed:[array objectAtIndex:count]];
+    
+    for (id object in array) {
+        SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
     
-    SKAction* atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
+    SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     
-    if (useFrontViewFrames == YES) {
+    if (useFrontAttackFrames == YES) {
+        
         SKAction* returnToWalking = [SKAction performSelector:@selector(runWalkFrontTextures) onTarget:self];
-        frontAttackAction         = [SKAction sequence:@[atlasAnimation,returnToWalking]];
+        frontAttackAction         = [SKAction sequence:@[atlasAnimation, returnToWalking]];
+        
     } else {
-    
-        frontAttackAction = [SKAction repeatActionForever:atlasAnimation];
+        
+        frontAttackAction = [SKAction repeatAction:atlasAnimation count:1];
     }
-
+    
 }
 -(void) setUpAttackSide {
-    id object;
     
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"SideAttackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"SideAttackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
-    for (object in array) {
-        SKTexture* texture = [atlas textureNamed:[array objectAtIndex:count]];
+    
+    for (id object in array) {
+        SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
     
-    SKAction* atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
+    SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     
     if (useSideViewFrames == YES) {
+        
         SKAction* returnToWalking = [SKAction performSelector:@selector(runWalkSideTextures) onTarget:self];
-        sideAttackAction          = [SKAction sequence:@[atlasAnimation,returnToWalking]];
+        sideAttackAction          = [SKAction sequence:@[atlasAnimation, returnToWalking]];
+        
     } else {
         
-        sideAttackAction = [SKAction repeatActionForever:atlasAnimation];
+        sideAttackAction = [SKAction repeatAction:atlasAnimation count:1];
     }
-
+    
     
 }
 -(void) setUpAttackBack {
-    id object;
-
+    
     SKTextureAtlas* atlas         = [SKTextureAtlas atlasNamed:[characterData objectForKey:@"BackAttackAtlasFile"]];
     NSArray* array                = [NSArray arrayWithArray:[characterData objectForKey:@"BackAttackFrames"]];
     NSMutableArray* atlasTextures = [NSMutableArray arrayWithCapacity:[array count]];
     
     unsigned char count = 0;
-    for (object in array) {
-        SKTexture* texture = [atlas textureNamed:[array objectAtIndex:count]];
+    
+    for (id object in array) {
+        SKTexture *texture = [atlas textureNamed:[array objectAtIndex:count]];
         [atlasTextures addObject:texture];
         count++;
     }
     
-    SKAction* atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
+    SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     
     if (useBackViewFrames == YES) {
+        
         SKAction* returnToWalking = [SKAction performSelector:@selector(runWalkBackTextures) onTarget:self];
-        backAttackAction          = [SKAction sequence:@[atlasAnimation,returnToWalking]];
+        backAttackAction          = [SKAction sequence:@[atlasAnimation, returnToWalking]];
+        
     } else {
         
-        backAttackAction = [SKAction repeatActionForever:atlasAnimation];
+        backAttackAction = [SKAction repeatAction:atlasAnimation count:1];
     }
-
+    
     
 }
 
@@ -338,55 +378,45 @@
 -(void) runRestingTextures {
 
     if (repeatRestAction == nil) {
-
         [self setUpRest];
     }
     if (character.hasActions == YES) {
-
         [character removeAllActions];
     }
-
     [character runAction:repeatRestAction];
 }
 -(void) runWalkFrontTextures {
-
+    
     if (walkFrontAction == nil) {
-
         [self setUpWalkFront];
     }
-
     if (character.hasActions == YES) {
-
         [character removeAllActions];
     }
-
     [character runAction:walkFrontAction];
 }
 -(void) runWalkBackTextures {
-
+    
     if (walkBackAction == nil) {
-
         [self setUpWalkBack];
     }
     if (character.hasActions == YES) {
-
         [character removeAllActions];
     }
-
     [character runAction:walkBackAction];
 }
 -(void) runWalkSideTextures {
 
     if (walkSideAction == nil) {
-
         [self setUpWalkSide];
     }
-    if (character.hasActions == YES) {
-
-        [character removeAllActions];
+    if (currentDirection != left || currentDirection != right) {
+    
+        if (character.hasActions == YES) {
+            [character removeAllActions];
+        }
+        [character runAction:walkSideAction];
     }
-
-    [character runAction:walkSideAction];
 }
 
 
@@ -394,10 +424,12 @@
 
 #pragma mark Update
 
--(void) update {
+-(void) update:(int) place {
     
     if (_followingEnabled == YES || _isLeader == YES) {
     
+        //TODO: remake the closing of characters by creating a difference between characters and adding/substracting?
+        
     switch (currentDirection) {
         case up:
             self.position = CGPointMake(self.position.x, self.position.y + speed);
@@ -469,13 +501,11 @@ CGFloat RadiansToDegrees(CGFloat radians)
             [self runWalkSideTextures];
         
         } else if (useFrontViewFrames == YES) {
-            
             character.zRotation = DegreesToRadians(-90);
             [self runWalkFrontTextures];
             
         } else {
-        
-        character.zRotation = DegreesToRadians(-90);
+            character.zRotation = DegreesToRadians(-90);
         
         }
         
@@ -488,25 +518,21 @@ CGFloat RadiansToDegrees(CGFloat radians)
     if (_followingEnabled == YES || _isLeader == YES){
         
         self.zPosition   = 100 - [place integerValue];
-        character.xScale = 1;// basicaly just flipps the character on X axis
+        character.xScale = 1;// basicaly just flipps the character on X axis or restores it back
 
         if (useSideViewFrames == YES) {
-            
             character.zRotation = DegreesToRadians(0);
             [self runWalkSideTextures];
             
         } else if (useFrontViewFrames == YES) {
-            
             character.zRotation = DegreesToRadians(90);
             [self runWalkFrontTextures];
             
         } else {
-            
             character.zRotation = DegreesToRadians(90);
             
         }
-        
-    currentDirection = right;
+        currentDirection = right;
     }
 }
 
@@ -515,22 +541,18 @@ CGFloat RadiansToDegrees(CGFloat radians)
     if (_followingEnabled == YES || _isLeader == YES){
 
         self.zPosition   = 100 + [place integerValue];
-        character.xScale = 1;// basicaly just flipps the character on X axis
+        character.xScale = 1;// basicaly just flipps the character on X axis or restores it back
         
         if (useBackViewFrames == YES) {
-            
-            character.zRotation = DegreesToRadians(0);
             [self runWalkBackTextures];
+            character.zRotation = DegreesToRadians(0);
             
         } else if (useFrontViewFrames == YES) {
-            
             character.zRotation = DegreesToRadians(180);
             [self runWalkFrontTextures];
             
         } else {
-            
             character.zRotation = DegreesToRadians(180);
-            
         }
         currentDirection = up;
     }
@@ -541,15 +563,14 @@ CGFloat RadiansToDegrees(CGFloat radians)
     if (_followingEnabled == YES || _isLeader == YES){
         
         self.zPosition      = 100 - [place integerValue];
-        character.xScale    = 1;// basicaly just flipps the character on X axis
+        character.xScale    = 1;// basicaly just flipps the character on X axis or restores it back
         character.zRotation = DegreesToRadians(0);
         
         if (useFrontViewFrames == YES) {
             
             [self runWalkFrontTextures];
         }
-        
-    currentDirection = down;
+        currentDirection = down;
     }
 }
 
@@ -642,11 +663,101 @@ CGFloat RadiansToDegrees(CGFloat radians)
     
 }
 
+#pragma mark attack!
 
+-(void) attack {
+    
+    if (_isLeader == YES || doesAttackWhenNotLeader == YES) {
+        if (currentDirection == down && useFrontAttackFrames == YES ){
+            [character removeAllActions];
+            
+            if (frontAttackAction == nil) {
+                [self setUpAttackFront];
+            }
+            [character runAction:frontAttackAction];
+        } else if ( currentDirection == left || currentDirection == right) {
+            [character removeAllActions];
+            
+            if (useSideAttackFrames == YES) {
+                if (sideAttackAction == nil) {
+                [self setUpAttackSide];
+                }
+            [character runAction:sideAttackAction];
+            } else if (useFrontAttackFrames == YES) {
+                if (frontAttackAction == nil) {
+                    [self setUpAttackFront];
+                }
+            [character runAction:frontAttackAction];
+            }
+            
+            
+        } else if (currentDirection == up) {
+            [character removeAllActions];
+            
+            if (useBackAttackFrames == YES) {
+                if (backAttackAction == nil) {
+                    [self setUpAttackBack];
+                }
+                [character runAction:backAttackAction];
+            } else if (useFrontAttackFrames == YES) {
+                if (frontAttackAction == nil) {
+                    [self setUpAttackFront];
+                }
+            [character runAction:frontAttackAction];
+            }
+        }
+    }
+    
+    if (useAttackParticle == YES && currentDirection != noDirection) {
+        [self performSelector:@selector(addEmitter) withObject:nil afterDelay:particleDelay];
+    }
+}
 
+-(void) addEmitter {
+    
+    NSString* emitterPath  = [[NSBundle mainBundle] pathForResource:[characterData objectForKey:@"AttackParticleFile"] ofType:@"sks"];
+    SKEmitterNode* emitter = [NSKeyedUnarchiver unarchiveObjectWithFile:emitterPath];
+    emitter.zPosition      = 150;
+    
+    switch (currentDirection) {
+        case up:
+            emitter.position = CGPointMake(0, character.frame.size.height / 2);
+            break;
+        case down:
+            emitter.position = CGPointMake(0, -(character.frame.size.height / 2));
+            break;
+        case left:
+            emitter.position = CGPointMake(-(character.frame.size.height / 2), 0);
+            break;
+        case right:
+            emitter.position = CGPointMake(character.frame.size.height / 2, 0);
+            break;
+        default:
+            emitter.position = CGPointMake(0, 0);
+            break;
+    }
+    
+    emitter.numParticlesToEmit = particlesToEmitt;
+    [self addChild:emitter];
+}
 
-
-
+-(void) doDamageWithAmount:(float)amount {
+    
+    _currentHealth = _currentHealth - amount;
+    [self childNodeWithName:@"green"].xScale = _currentHealth/_maxHealth;
+    
+    if (_currentHealth <= 0) {
+        
+        [self enumerateChildNodesWithName:@"*" usingBlock:^(SKNode *node, BOOL *stop) {
+            
+            [node removeFromParent];
+            
+        }];
+        
+        [self removeFromParent];
+    }
+    
+}
 
 
 
