@@ -10,6 +10,7 @@
 #import "constants.h"
 #import "Character.h"
 #import "StartMenu.h"
+#import "Coin.h"
 
 @interface Level () {
     
@@ -140,6 +141,28 @@
         map.xScale = .5;
         map.yScale = .5;
     }*/
+    
+    //Setting up coins..
+    
+    NSArray* coinArray = [NSArray arrayWithArray:[levelDict objectForKey:@"Coins"]];
+    [self setUpCoins:coinArray];
+}
+
+#pragma mark SetUp Coins
+
+-(void) setUpCoins:(NSArray*)theArray {
+    int c = 0;
+    while (c < [theArray count]) {
+        NSDictionary *coinDict = [NSDictionary dictionaryWithDictionary:[theArray objectAtIndex:c]];
+        NSString* baseString = [NSString stringWithString:[coinDict objectForKeyedSubscript:@"BaseFrame"]];
+        CGPoint coinLocation = CGPointFromString([coinDict objectForKey:@"StartLocation"]);
+        
+        Coin *newCoin = [Coin node];
+        [newCoin createWithBaseImage:baseString andLocation:coinLocation];
+        [myWorld addChild:newCoin];
+        c++;
+    }
+    
 }
 
 -(void) debugPath: (CGRect) theRect {
@@ -468,7 +491,9 @@
             
             if (character == leader) {
                 
+                if (leader.isDying == NO) {
                 leaderFound = YES;
+                }
                 
             } else if (character.followingEnabled == YES){
                 
@@ -521,6 +546,7 @@
     firstBody  = contact.bodyA;
     secondBody = contact.bodyB;
     
+    //WAAAAALZZZ
     if (firstBody.categoryBitMask == wallCategory || secondBody.categoryBitMask == wallCategory) {
         
         if (firstBody.categoryBitMask == playerCategory) {
@@ -535,6 +561,21 @@
         
     }
     
+    //COIIIIINS
+    if (firstBody.categoryBitMask == coinCategory || secondBody.categoryBitMask == coinCategory) {
+        
+        if (firstBody.categoryBitMask == coinCategory) {
+            Coin* coin = (Coin*) firstBody.node;
+            [coin removeFromParent];
+            
+        } else if (secondBody.categoryBitMask == coinCategory) {
+            Coin* coin = (Coin*) secondBody.node;
+            [coin removeFromParent];
+            
+        }
+    }
+    
+    //PLAYEEERZZZZZ
     if (firstBody.categoryBitMask == playerCategory && secondBody.categoryBitMask == playerCategory) {
         
         Character* character  = (Character*) firstBody.node;
@@ -555,9 +596,9 @@
             
             }
         }
-    }
+    }//if (firstBody.categoryBitMask == playerCategory && secondBody.categoryBitMask == playerCategory) {
         
-}
+}//-(void) didBeginContact: (SKPhysicsContact*) contact {
 
 #pragma mark GAME OVER MAN
 

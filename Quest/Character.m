@@ -179,8 +179,8 @@
     self.physicsBody.allowsRotation     = YES;
 
     self.physicsBody.categoryBitMask    = playerCategory;
-    self.physicsBody.collisionBitMask   = wallCategory | playerCategory;
-    self.physicsBody.contactTestBitMask = wallCategory | playerCategory;// separate other categories with |
+    self.physicsBody.collisionBitMask   = wallCategory | playerCategory | coinCategory;
+    self.physicsBody.contactTestBitMask = wallCategory | playerCategory | coinCategory; // separate other categories with |
 
     
 }
@@ -744,6 +744,7 @@ CGFloat RadiansToDegrees(CGFloat radians)
     [self addChild:emitter];
 }
 
+//TODO: make some bool variable to prevent using any action when dying
 -(void) doDamageWithAmount:(float)amount {
     
     _currentHealth = _currentHealth - amount;
@@ -760,7 +761,7 @@ CGFloat RadiansToDegrees(CGFloat radians)
 }
 
 -(void) damageActions {
-    
+//TODO: stop characters behind the hit 1 to prevent pushing him again
     SKAction* push;
     
     switch (currentDirection) {
@@ -802,18 +803,25 @@ CGFloat RadiansToDegrees(CGFloat radians)
         [self enumerateChildNodesWithName:@"*" usingBlock:^(SKNode *node, BOOL *stop) {
             [node performSelector:@selector(removeFromParent) withObject:nil afterDelay:0.05];
         }];
+        
         [self deathEmmiter];
+        
+        _isDying = YES;
+        self.physicsBody.dynamic = NO;
+        self.physicsBody = NO;
+        
         [self performSelector:@selector(removeFromParent) withObject:nil afterDelay:1.5];
     }
 }
 
 -(void) deathEmmiter {
     
-    NSString* pathToEmitter = [[NSBundle mainBundle] pathForResource:@"DeathFire" ofType:@"sks"];
-    SKEmitterNode* emitter = [NSKeyedUnarchiver unarchiveObjectWithFile:pathToEmitter];
-    emitter.zPosition = 150;
-    emitter.position = CGPointMake(0, - (character.frame.size.height/2) +10);
+    NSString* pathToEmitter    = [[NSBundle mainBundle] pathForResource:@"DeathFire" ofType:@"sks"];
+    SKEmitterNode* emitter     = [NSKeyedUnarchiver unarchiveObjectWithFile:pathToEmitter];
+    emitter.zPosition          = 150;
+    emitter.position           = CGPointMake(0, - (character.frame.size.height/2) +10);
     emitter.numParticlesToEmit = 400;
+    
     [self addChild:emitter];
     
 }

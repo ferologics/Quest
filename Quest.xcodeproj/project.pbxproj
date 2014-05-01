@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070B03931912E49700F4367E /* Coin.m in Sources */ = {isa = PBXBuildFile; fileRef = 070B03921912E49700F4367E /* Coin.m */; };
 		07179E7B190E89BA008786FC /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 07179E79190E89BA008786FC /* Spark.sks */; };
 		07179E7C190E89BA008786FC /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 07179E7A190E89BA008786FC /* spark.png */; };
 		07630B6E1912925200F4F1C0 /* DeathFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = 07630B6D1912925200F4F1C0 /* DeathFire.sks */; };
@@ -17,8 +18,6 @@
 		07B5066A184F80D500D15168 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07B50668184F80D500D15168 /* InfoPlist.strings */; };
 		07B5066C184F80D500D15168 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B5066B184F80D500D15168 /* main.m */; };
 		07B50670184F80D500D15168 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B5066F184F80D500D15168 /* AppDelegate.m */; };
-		07B50673184F80D500D15168 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B50671184F80D500D15168 /* Main_iPhone.storyboard */; };
-		07B50676184F80D500D15168 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B50674184F80D500D15168 /* Main_iPad.storyboard */; };
 		07B50679184F80D500D15168 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B50678184F80D500D15168 /* ViewController.m */; };
 		07B50687184F80D500D15168 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B50686184F80D500D15168 /* XCTest.framework */; };
 		07B50688184F80D500D15168 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B5065D184F80D400D15168 /* Foundation.framework */; };
@@ -48,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		070B03911912E49700F4367E /* Coin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coin.h; sourceTree = "<group>"; };
+		070B03921912E49700F4367E /* Coin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coin.m; sourceTree = "<group>"; };
 		07179E79190E89BA008786FC /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
 		07179E7A190E89BA008786FC /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		07630B6D1912925200F4F1C0 /* DeathFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeathFire.sks; sourceTree = "<group>"; };
@@ -62,8 +63,6 @@
 		07B5066D184F80D500D15168 /* Quest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Quest-Prefix.pch"; sourceTree = "<group>"; };
 		07B5066E184F80D500D15168 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		07B5066F184F80D500D15168 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		07B50672184F80D500D15168 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		07B50675184F80D500D15168 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		07B50677184F80D500D15168 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		07B50678184F80D500D15168 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		07B50685184F80D500D15168 /* QuestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,19 +147,19 @@
 			children = (
 				07B5066E184F80D500D15168 /* AppDelegate.h */,
 				07B5066F184F80D500D15168 /* AppDelegate.m */,
-				07B50671184F80D500D15168 /* Main_iPhone.storyboard */,
-				07B50674184F80D500D15168 /* Main_iPad.storyboard */,
-				07B50678184F80D500D15168 /* ViewController.m */,
 				07B50677184F80D500D15168 /* ViewController.h */,
+				07B50678184F80D500D15168 /* ViewController.m */,
 				07B506A7184FB09B00D15168 /* constants.h */,
 				07B506A8184FB12B00D15168 /* GameData.plist */,
-				07179E79190E89BA008786FC /* Spark.sks */,
-				07179E7A190E89BA008786FC /* spark.png */,
 				07B5069C184FAE7500D15168 /* Level.h */,
 				07B5069D184FAE7500D15168 /* Level.m */,
 				07B506A2184FAFCC00D15168 /* Character.h */,
 				07B506A3184FAFCC00D15168 /* Character.m */,
+				070B03911912E49700F4367E /* Coin.h */,
+				070B03921912E49700F4367E /* Coin.m */,
 				07630B6D1912925200F4F1C0 /* DeathFire.sks */,
+				07179E79190E89BA008786FC /* Spark.sks */,
+				07179E7A190E89BA008786FC /* spark.png */,
 				07B5069F184FAF5700D15168 /* StartMenu.h */,
 				07B506A0184FAF5700D15168 /* StartMenu.m */,
 				07B506AA184FB3FE00D15168 /* Images.xcassets */,
@@ -284,10 +283,8 @@
 				07630B6E1912925200F4F1C0 /* DeathFire.sks in Resources */,
 				07B506AD184FB47A00D15168 /* front.atlas in Resources */,
 				07B506AB184FB3FE00D15168 /* Images.xcassets in Resources */,
-				07B50676184F80D500D15168 /* Main_iPad.storyboard in Resources */,
 				07B506B5184FB4D700D15168 /* still.atlas in Resources */,
 				07B506B3184FB4BD00D15168 /* side.atlas in Resources */,
-				07B50673184F80D500D15168 /* Main_iPhone.storyboard in Resources */,
 				07B5066A184F80D500D15168 /* InfoPlist.strings in Resources */,
 				07179E7B190E89BA008786FC /* Spark.sks in Resources */,
 				07B506B1184FB4B300D15168 /* back.atlas in Resources */,
@@ -315,6 +312,7 @@
 				07B506A1184FAF5700D15168 /* StartMenu.m in Sources */,
 				07B50670184F80D500D15168 /* AppDelegate.m in Sources */,
 				07B5066C184F80D500D15168 /* main.m in Sources */,
+				070B03931912E49700F4367E /* Coin.m in Sources */,
 				07B506A4184FAFCC00D15168 /* Character.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -344,22 +342,6 @@
 				07B50669184F80D500D15168 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		07B50671184F80D500D15168 /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				07B50672184F80D500D15168 /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		07B50674184F80D500D15168 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				07B50675184F80D500D15168 /* Base */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		07B5068F184F80D500D15168 /* InfoPlist.strings */ = {

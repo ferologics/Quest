@@ -20,6 +20,7 @@
 @property (nonatomic, assign) float currentHealth;
 @property (nonatomic, assign) float maxHealth;
 @property (nonatomic, assign) BOOL hasOwnHealth;
+@property (nonatomic, assign) BOOL isDying;
 
 -(void) makeLeader;
 -(void) attack;

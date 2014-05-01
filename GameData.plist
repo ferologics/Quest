@@ -5,6 +5,27 @@
 	<key>Levels</key>
 	<array>
 		<dict>
+			<key>Coins</key>
+			<array>
+				<dict>
+					<key>BaseFrame</key>
+					<string>coin</string>
+					<key>StartLocation</key>
+					<string>{ -200 , -200 }</string>
+				</dict>
+				<dict>
+					<key>BaseFrame</key>
+					<string>coin</string>
+					<key>StartLocation</key>
+					<string>{ -200 , -100 }</string>
+				</dict>
+				<dict>
+					<key>BaseFrame</key>
+					<string>coin</string>
+					<key>StartLocation</key>
+					<string>{ 400 , -400 }</string>
+				</dict>
+			</array>
 			<key>Background</key>
 			<string>level_map1</string>
 			<key>ShrinkBackgroundBorderBy</key>
