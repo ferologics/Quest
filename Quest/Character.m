@@ -68,8 +68,19 @@
     character      = [SKSpriteNode spriteNodeWithImageNamed:[characterData objectForKey:@"BaseFrame"]];
     self.zPosition = 100;
     self.name      = @"character";
+    
+    //checking for alternate Locations! 
+    if (_checkForDifferentPhoneLoations == YES) {
+        
+        if ([characterData objectForKey:@"StartLocationPhone"] != nil) {
+            self.position  = CGPointFromString([characterData objectForKey:@"StartLocationPhone"]);
+        } else {
+            self.position  = CGPointFromString([characterData objectForKey:@"StartLocation"]);
+        }
 
-    self.position  = CGPointFromString([characterData objectForKey:@"StartLocation"]);
+    } else {
+        self.position  = CGPointFromString([characterData objectForKey:@"StartLocation"]);
+    }
     
     [self addChild:character];
     
@@ -470,7 +481,7 @@
             break;
         case noDirection:
             // in case you want to do something for noDirection
-            [self stopMoving];
+            
             break;
         default:
             break;
@@ -656,8 +667,12 @@ CGFloat RadiansToDegrees(CGFloat radians)
 
 -(void) makeLeader {
     
+    currentDirection = noDirection;
     _isLeader = YES;
     
+    if (useForCollisions == NO) {
+        [self setUpPhysics];
+    }
 }
 
 -(int)returnDirection{

@@ -39,8 +39,10 @@ static int levelCount = 0;
     
     NSArray* characterArray;
     
+    BOOL isDevicePhone;
     BOOL gameHasBegun;
     BOOL useDelayedFollow;
+    BOOL checkForDifferentPhoneLocations;
     
     float followDelay;
     
@@ -54,10 +56,17 @@ static int levelCount = 0;
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         
-        gameHasBegun      = NO;
-        currentLevel      = levelCount;// later on we will create a singleton to hold game data that is independent of this class
-        charactersInWorld = 0;
-        coinsCollected    = 0;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            isDevicePhone = YES;
+        } else {
+            isDevicePhone = NO;
+        }
+        
+        checkForDifferentPhoneLocations = NO;
+        gameHasBegun                    = NO;
+        currentLevel                    = levelCount;// later on we will create a singleton to hold game data that is independent of this class
+        charactersInWorld               = 0;
+        coinsCollected                  = 0;
         
         [self setUpScene];
         [self performSelector:@selector(setUpCharacters) withObject:nil afterDelay:2.0];
@@ -93,6 +102,10 @@ static int levelCount = 0;
     map.position                        = CGPointMake(0, 0);
     [myWorld addChild:map];
 
+    if (isDevicePhone == NO) {
+        checkForDifferentPhoneLocations = NO;
+    }
+    checkForDifferentPhoneLocations     = [[levelDict objectForKey:@"CheckForDifferentPhoneLocations"] boolValue];
     useDelayedFollow                    = [[levelDict objectForKey:@"UseDelayedFollow"] boolValue];
     followDelay                         = [[levelDict objectForKey:@"FollowDelay"] floatValue];
     levelBorderCausesDamageBy           = [[levelDict objectForKey:@"LevelBorderCausesDamageBy"] intValue];
@@ -167,7 +180,17 @@ static int levelCount = 0;
     while (c < [theArray count]) {
         NSDictionary *coinDict = [NSDictionary dictionaryWithDictionary:[theArray objectAtIndex:c]];
         NSString* baseString = [NSString stringWithString:[coinDict objectForKeyedSubscript:@"BaseFrame"]];
-        CGPoint coinLocation = CGPointFromString([coinDict objectForKey:@"StartLocation"]);
+        CGPoint coinLocation;
+        
+        if (checkForDifferentPhoneLocations == YES) {
+            if ([coinDict objectForKey:@"StartLocationPhone"] != NO) {
+                coinLocation = CGPointFromString([coinDict objectForKey:@"StartLocationPhone"]);
+            } else {
+                coinLocation = CGPointFromString([coinDict objectForKey:@"StartLocation"]);
+            }
+        } else {
+            coinLocation = CGPointFromString([coinDict objectForKey:@"StartLocation"]);
+        }
         
         Coin *newCoin = [Coin node];
         [newCoin createWithBaseImage:baseString andLocation:coinLocation];
@@ -459,6 +482,7 @@ static int levelCount = 0;
 -(void) setUpCharacters {
     [self fadeToDeath:[myWorld childNodeWithName:@"instructions"]];
     leader = [Character node];
+    leader.checkForDifferentPhoneLoations = checkForDifferentPhoneLocations;
     [leader createWithDictionary: [characterArray objectAtIndex:0]];
     [leader makeLeader];
     [myWorld addChild:leader];
@@ -478,6 +502,7 @@ static int levelCount = 0;
     charactersInWorld++;
     
     Character* character = [Character node];
+    character.checkForDifferentPhoneLoations = checkForDifferentPhoneLocations;
     [character createWithDictionary:[characterArray objectAtIndex:charactersInWorld]];
     [myWorld addChild:character];
     
