@@ -47,13 +47,14 @@ static int levelCount = 0;
     float followDelay;
     
     __block unsigned char place;
-
 }
+
 @end
 
 @implementation Level
 
 -(id)initWithSize:(CGSize)size {
+    
     if (self = [super initWithSize:size]) {
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -105,6 +106,7 @@ static int levelCount = 0;
     if (isDevicePhone == NO) {
         checkForDifferentPhoneLocations = NO;
     }
+    
     checkForDifferentPhoneLocations     = [[levelDict objectForKey:@"CheckForDifferentPhoneLocations"] boolValue];
     useDelayedFollow                    = [[levelDict objectForKey:@"UseDelayedFollow"] boolValue];
     followDelay                         = [[levelDict objectForKey:@"FollowDelay"] floatValue];
@@ -197,7 +199,6 @@ static int levelCount = 0;
         [myWorld addChild:newCoin];
         c++;
     }
-    
 }
 
 -(void) debugPath: (CGRect) theRect {
@@ -212,7 +213,6 @@ static int levelCount = 0;
     pathShape.zPosition    = 1000;
     
     [myWorld addChild:pathShape];
-    
 }
 
 #pragma mark Gestures
@@ -297,7 +297,6 @@ static int levelCount = 0;
                 [character followInFormationWithDirection:right withPlace:place andLeaderPosition:leader.position];
             }
         }
-        
         place++;
     }];
 }
@@ -321,7 +320,6 @@ static int levelCount = 0;
                 [character followInFormationWithDirection:down withPlace:place andLeaderPosition:leader.position];
             }
         }
-        
         place++;
     }];
 }
@@ -345,7 +343,6 @@ static int levelCount = 0;
                 [character followInFormationWithDirection:up withPlace:place andLeaderPosition:leader.position];
             }
         }
-        
         place++;
     }];
 }
@@ -355,14 +352,11 @@ static int levelCount = 0;
     [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
         Character *character = (Character*) node;
         [character attack];
-        
     }];
-    
 }
 
 -(void) tapToSwithToSecond:(UITapGestureRecognizer*) recogniser {
     [self switchOrder:2];
-
 }
 
 -(void) tapToSwitchToThird:(UITapGestureRecognizer*) recogniser {
@@ -393,11 +387,8 @@ static int levelCount = 0;
                 [character makeLeader];
                 [myWorld insertChild:leader atIndex:0];
             }
-            
         }
     }];
-    
-    
 }
 
 #pragma mark STOP ALL CHARACTERS
@@ -428,19 +419,16 @@ static int levelCount = 0;
         } else {
             
             [character stopInFormation:leaderDirection andPlaceInLine:place leaderLocation:leader.position];
-            
         }
-        
         place++;
     }];
-    
 }
 
 -(void) stopAllPlayersFromCollision:(SKNode*)damagedNode {
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-    [myWorld enumerateChildNodesWithName:@"caracter" usingBlock:^(SKNode *node, BOOL *stop) {
+    [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
         
         Character* character = (Character*) node;
         
@@ -450,7 +438,6 @@ static int levelCount = 0;
             [character stopMoving];
         }
     }];
-    
 }
 
 #pragma mark Scene moved from view
@@ -494,7 +481,6 @@ static int levelCount = 0;
         [self performSelector:@selector(createAnotherCharacter) withObject:nil afterDelay:(0.5 * c)];
         c++;
     }
-    
 }
 
 -(void) createAnotherCharacter {
@@ -507,7 +493,6 @@ static int levelCount = 0;
     [myWorld addChild:character];
     
     character.zPosition = character.zPosition - charactersInWorld;
-    
 }
 
 #pragma mark UPDATE
@@ -539,10 +524,8 @@ static int levelCount = 0;
                 character.idealX = leader.position.x;
                 character.idealY = leader.position.y;
             }
-            
             [character update:place];
         }
-        
     }];
     // outside of the enumeration block, we then test for a leader or follower
     
@@ -550,23 +533,18 @@ static int levelCount = 0;
         
         if (anyNonLeaderFoundInPlay == YES) {
             
-            NSLog(@"Leader not found, assigning new one");
-            
             [myWorld enumerateChildNodesWithName:@"character" usingBlock:^(SKNode *node, BOOL *stop) {
                
                 Character* character = (Character*) node;
                 if (character.followingEnabled == YES) {
                     
-                leader = character;
-                [leader makeLeader];
-                [myWorld insertChild:leader atIndex:0];
-                
+                    character.changingLeaderUpOnDeath = YES;
+                    leader = character;
+                    [leader makeLeader];
+                    [myWorld insertChild:leader atIndex:0];
                 }
-                
             }];
         } else {
-            
-            NSLog(@"game over");
             gameHasBegun = NO;
             [self gameOver];
         }
@@ -588,12 +566,12 @@ static int levelCount = 0;
         
         if (firstBody.categoryBitMask == playerCategory) {
             Character* character = (Character*) firstBody.node;
-            [character doDamageWithAmount:levelBorderCausesDamageBy];
             [self stopAllPlayersFromCollision:character];
+            [character doDamageWithAmount:levelBorderCausesDamageBy];
         } else if (secondBody.categoryBitMask == playerCategory) {
             Character* character = (Character*) secondBody.node;
-            [character doDamageWithAmount:levelBorderCausesDamageBy];
             [self stopAllPlayersFromCollision:character];
+            [character doDamageWithAmount:levelBorderCausesDamageBy];
         }
         
     }

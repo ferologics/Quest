@@ -13,6 +13,7 @@
 -(void)createWithDictionary: (NSDictionary*) charData;
 -(void)update:(int)place;
 
+@property (nonatomic, assign) BOOL changingLeaderUpOnDeath;
 @property (nonatomic, assign) BOOL checkForDifferentPhoneLoations;
 @property (nonatomic, assign) int idealX;
 @property (nonatomic, assign) int idealY;

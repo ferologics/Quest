@@ -53,10 +53,10 @@
 
 
 -(id) init {
+    
     if (self = [super init]) {
         
         currentDirection = noDirection;
-        
     }
     return self;
 }
@@ -69,7 +69,7 @@
     self.zPosition = 100;
     self.name      = @"character";
     
-    //checking for alternate Locations! 
+    //checking for alternate Locations!
     if (_checkForDifferentPhoneLoations == YES) {
         
         if ([characterData objectForKey:@"StartLocationPhone"] != nil) {
@@ -165,7 +165,6 @@
     
 }
 
-
 #pragma mark Set Up Physics
 
 -(void) setUpPhysics {
@@ -192,8 +191,6 @@
     self.physicsBody.categoryBitMask    = playerCategory;
     self.physicsBody.collisionBitMask   = wallCategory | playerCategory | coinCategory;
     self.physicsBody.contactTestBitMask = wallCategory | playerCategory | coinCategory; // separate other categories with |
-
-    
 }
 
 -(void) debugPath: (CGRect) theRect withBodyType:(int) bodyType {
@@ -218,7 +215,6 @@
     pathShape.zPosition   = 1000;
     
     [self addChild:pathShape];
-    
 }
 
 #pragma mark SetUp Rest/Walk Frames
@@ -240,8 +236,8 @@
     
     SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     walkFrontAction          = [SKAction repeatActionForever:atlasAnimation];
-    
 }
+
 -(void) setUpWalkBack {
     id object;
 
@@ -259,8 +255,8 @@
     
     SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     walkBackAction           = [SKAction repeatActionForever:atlasAnimation];
-    
 }
+
 -(void) setUpWalkSide {
     id object;
 
@@ -279,6 +275,7 @@
     SKAction *atlasAnimation = [SKAction animateWithTextures:atlasTextures timePerFrame:1.0/FPS];
     walkSideAction           = [SKAction repeatActionForever:atlasAnimation];
 }
+
 -(void) setUpRest {
     id object;
 
@@ -298,7 +295,6 @@
     SKAction *wait           = [SKAction waitForDuration:0.5];
     SKAction *sequence       = [SKAction sequence:@[atlasAnimation, wait]];
     repeatRestAction         = [SKAction repeatActionForever:sequence];
-    
 }
 
 #pragma mark SetUp Attack Frames
@@ -329,8 +325,8 @@
         
         frontAttackAction = [SKAction repeatAction:atlasAnimation count:1];
     }
-    
 }
+
 -(void) setUpAttackSide {
     id object;
 
@@ -357,9 +353,8 @@
         
         sideAttackAction = [SKAction repeatAction:atlasAnimation count:1];
     }
-    
-    
 }
+
 -(void) setUpAttackBack {
     id object;
 
@@ -400,6 +395,7 @@
     }
     [character runAction:repeatRestAction];
 }
+
 -(void) runWalkFrontTextures {
     
     if (walkFrontAction == nil) {
@@ -408,8 +404,9 @@
     if (character.hasActions == YES) {
         [character removeAllActions];
     }
-    [character runAction:walkFrontAction];
+   [character runAction:walkFrontAction];
 }
+
 -(void) runWalkBackTextures {
     
     if (walkBackAction == nil) {
@@ -420,6 +417,7 @@
     }
     [character runAction:walkBackAction];
 }
+
 -(void) runWalkSideTextures {
 
     if (walkSideAction == nil) {
@@ -616,11 +614,8 @@ CGFloat RadiansToDegrees(CGFloat radians)
 #pragma mark STOP moving
 
 -(void)stopMoving {
-    
     currentDirection = noDirection;
-    
     [character removeAllActions];
-
 }
 
 -(void) stopMovingFromGettingHit {
@@ -667,7 +662,11 @@ CGFloat RadiansToDegrees(CGFloat radians)
 
 -(void) makeLeader {
     
-    currentDirection = noDirection;
+    if (_changingLeaderUpOnDeath == YES) {
+        currentDirection = noDirection;
+        _changingLeaderUpOnDeath = NO;
+    }
+    
     _isLeader = YES;
     
     if (useForCollisions == NO) {
@@ -678,7 +677,6 @@ CGFloat RadiansToDegrees(CGFloat radians)
 -(int)returnDirection{
     
     return currentDirection;
-    
 }
 
 #pragma mark attack!
@@ -776,7 +774,7 @@ CGFloat RadiansToDegrees(CGFloat radians)
 }
 
 -(void) damageActions {
-//TODO: stop characters behind the hit 1 to prevent pushing him again
+
     SKAction* push;
     
     switch (currentDirection) {
@@ -838,12 +836,6 @@ CGFloat RadiansToDegrees(CGFloat radians)
     emitter.numParticlesToEmit = 400;
     
     [self addChild:emitter];
-    
 }
-
-
-
-
-
 
 @end
