@@ -35,6 +35,7 @@ static int levelCount = 0;
     unsigned char charactersInWorld; // can be 0 to 255
     
     SKNode* myWorld;
+    SKLabelNode* coinLabel;
     Character* leader;
     
     NSArray* characterArray;
@@ -130,6 +131,14 @@ static int levelCount = 0;
     label2.text     = @"Touch with 2 or 3 Fingers to Swap Leader";
     label2.fontSize = 22;
     label2.position = CGPointMake(0, -50);
+    
+    
+    coinLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    coinLabel.text = @"Coins: 0";
+    coinLabel.fontSize = 22;
+    coinLabel.zPosition = 10001;
+    coinLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+    [myWorld addChild:coinLabel];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
@@ -539,7 +548,7 @@ static int levelCount = 0;
                 if (character.followingEnabled == YES) {
                     
                     character.changingLeaderUpOnDeath = YES;
-                    leader = character;
+                    leader                            = character;
                     [leader makeLeader];
                     [myWorld insertChild:leader atIndex:0];
                 }
@@ -646,6 +655,8 @@ static int levelCount = 0;
 
 -(void) testForCoins {
     coinsCollected++;
+    
+    coinLabel.text = [NSString stringWithFormat:@"Coins: %i", coinsCollected];
     if (coinsCollected == coinsInlevel) {
         [self advanceLevel];
     }
@@ -665,6 +676,7 @@ static int levelCount = 0;
     CGPoint cameraPositionInScene = [node.scene convertPoint:node.position fromNode:node.parent];
     node.parent.position          = CGPointMake(node.parent.position.x - cameraPositionInScene.x, node.parent.position.y - cameraPositionInScene.y);
 
+    coinLabel.position = CGPointMake((leader.position.x - (self.scene.size.width/2)) + 40, (leader.position.y + (self.scene.size.height/2) - 30));
 }
 
 @end

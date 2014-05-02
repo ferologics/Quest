@@ -663,10 +663,9 @@ CGFloat RadiansToDegrees(CGFloat radians)
 -(void) makeLeader {
     
     if (_changingLeaderUpOnDeath == YES) {
-        currentDirection = noDirection;
+        currentDirection         = noDirection;
         _changingLeaderUpOnDeath = NO;
     }
-    
     _isLeader = YES;
     
     if (useForCollisions == NO) {

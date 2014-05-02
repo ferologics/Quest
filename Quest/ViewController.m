@@ -15,8 +15,8 @@
 {
     [super viewDidLoad];
 
-    NSString* path = [[NSBundle mainBundle] bundlePath];
-    NSString* finalPath = [path stringByAppendingPathComponent:@"GameData.plist"];
+    NSString* path          = [[NSBundle mainBundle] bundlePath];
+    NSString* finalPath     = [path stringByAppendingPathComponent:@"GameData.plist"];
     NSDictionary* plistData = [NSDictionary dictionaryWithContentsOfFile:finalPath];
     
     float globalResizePad;
@@ -35,8 +35,8 @@
     }
     
     // Configure the view.
-    SKView * skView = (SKView *)self.view;
-    skView.showsFPS = YES;
+    SKView * skView       = (SKView *)self.view;
+    skView.showsFPS       = YES;
     skView.showsNodeCount = YES;
     
     CGSize newSize;

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>GlobalResizePad</key>
-	<integer>2</integer>
-	<key>GlobalResizePhone</key>
 	<integer>1</integer>
+	<key>GlobalResizePhone</key>
+	<integer>2</integer>
 	<key>Levels</key>
 	<array>
 		<dict>
@@ -443,12 +443,16 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CheckForDifferentPhoneLocations</key>
+			<true/>
 			<key>Coins</key>
 			<array>
 				<dict>
 					<key>BaseFrame</key>
 					<string>coin</string>
 					<key>StartLocation</key>
+					<string>{ -200 , -200 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ -200 , -200 }</string>
 				</dict>
 				<dict>
@@ -486,6 +490,8 @@
 					<key>Speed</key>
 					<integer>5</integer>
 					<key>StartLocation</key>
+					<string>{ 0 , 0 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ 0 , 0 }</string>
 					<key>UseForCollisions</key>
 					<true/>
@@ -871,12 +877,16 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CheckForDifferentPhoneLocations</key>
+			<true/>
 			<key>Coins</key>
 			<array>
 				<dict>
 					<key>BaseFrame</key>
 					<string>coin</string>
 					<key>StartLocation</key>
+					<string>{ -200 , -200 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ -200 , -200 }</string>
 				</dict>
 				<dict>
@@ -914,6 +924,8 @@
 					<key>Speed</key>
 					<integer>5</integer>
 					<key>StartLocation</key>
+					<string>{ 0 , 0 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ 0 , 0 }</string>
 					<key>UseForCollisions</key>
 					<true/>
@@ -1299,12 +1311,16 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CheckForDifferentPhoneLocations</key>
+			<true/>
 			<key>Coins</key>
 			<array>
 				<dict>
 					<key>BaseFrame</key>
 					<string>coin</string>
 					<key>StartLocation</key>
+					<string>{ -200 , -200 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ -200 , -200 }</string>
 				</dict>
 				<dict>
@@ -1342,6 +1358,8 @@
 					<key>Speed</key>
 					<integer>5</integer>
 					<key>StartLocation</key>
+					<string>{ 0 , 0 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ 0 , 0 }</string>
 					<key>UseForCollisions</key>
 					<true/>
@@ -1727,12 +1745,16 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CheckForDifferentPhoneLocations</key>
+			<true/>
 			<key>Coins</key>
 			<array>
 				<dict>
 					<key>BaseFrame</key>
 					<string>coin</string>
 					<key>StartLocation</key>
+					<string>{ -200 , -200 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ -200 , -200 }</string>
 				</dict>
 				<dict>
@@ -1770,6 +1792,442 @@
 					<key>Speed</key>
 					<integer>5</integer>
 					<key>StartLocation</key>
+					<string>{ 0 , 0 }</string>
+					<key>StartLocationPhone</key>
+					<string>{ 0 , 0 }</string>
+					<key>UseForCollisions</key>
+					<true/>
+					<key>CollisionBodyType</key>
+					<string>circle</string>
+					<key>CollisionBodyCoversWhatPercent</key>
+					<integer>1</integer>
+					<key>DebugBody</key>
+					<false/>
+					<key>FPS</key>
+					<integer>20</integer>
+					<key>UseRestingFrames</key>
+					<true/>
+					<key>RestingAtlasFile</key>
+					<string>still</string>
+					<key>RestingFrames</key>
+					<array>
+						<string>still_frame1</string>
+						<string>still_frame2</string>
+						<string>still_frame3</string>
+						<string>still_frame4</string>
+						<string>still_frame3</string>
+						<string>still_frame2</string>
+						<string>still_frame1</string>
+					</array>
+					<key>UseFrontViewFrames</key>
+					<true/>
+					<key>WalkFrontAtlasFile</key>
+					<string>front</string>
+					<key>WalkFrontFrames</key>
+					<array>
+						<string>walk_front1</string>
+						<string>walk_front2</string>
+						<string>walk_front3</string>
+						<string>walk_front4</string>
+						<string>walk_front5</string>
+						<string>walk_front6</string>
+						<string>walk_front7</string>
+						<string>walk_front8</string>
+					</array>
+					<key>UseSideViewFrames</key>
+					<true/>
+					<key>WalkSideAtlasFile</key>
+					<string>side</string>
+					<key>WalkSideFrames</key>
+					<array>
+						<string>walk_side1</string>
+						<string>walk_side2</string>
+						<string>walk_side3</string>
+						<string>walk_side4</string>
+						<string>walk_side5</string>
+						<string>walk_side6</string>
+						<string>walk_side7</string>
+						<string>walk_side8</string>
+					</array>
+					<key>UseBackViewFrames</key>
+					<true/>
+					<key>WalkBackAtlasFile</key>
+					<string>back</string>
+					<key>WalkBackFrames</key>
+					<array>
+						<string>walk_back1</string>
+						<string>walk_back2</string>
+						<string>walk_back3</string>
+						<string>walk_back4</string>
+						<string>walk_back5</string>
+						<string>walk_back6</string>
+						<string>walk_back7</string>
+						<string>walk_back8</string>
+					</array>
+					<key>DoesAttackWhenNotLeader</key>
+					<true/>
+					<key>UseFrontAttackFrames</key>
+					<true/>
+					<key>FrontAttackAtlasFile</key>
+					<string>front</string>
+					<key>FrontAttackFrames</key>
+					<array>
+						<string>front_attack1</string>
+						<string>front_attack2</string>
+						<string>front_attack3</string>
+						<string>front_attack4</string>
+					</array>
+					<key>UseSideAttackFrames</key>
+					<true/>
+					<key>SideAttackAtlasFile</key>
+					<string>side</string>
+					<key>SideAttackFrames</key>
+					<array>
+						<string>side_attack1</string>
+						<string>side_attack2</string>
+						<string>side_attack3</string>
+						<string>side_attack4</string>
+						<string>side_attack5</string>
+					</array>
+					<key>UseBackAttackFrames</key>
+					<true/>
+					<key>BackAttackAtlasFile</key>
+					<string>back</string>
+					<key>BackAttackFrames</key>
+					<array>
+						<string>back_attack1</string>
+						<string>back_attack2</string>
+						<string>back_attack3</string>
+						<string>back_attack4</string>
+						<string>back_attack5</string>
+					</array>
+					<key>UseAttackParticles</key>
+					<true/>
+					<key>AttackParticleFile</key>
+					<string>Spark</string>
+					<key>ParticlesToEmitt</key>
+					<integer>15</integer>
+					<key>ParticleDelay</key>
+					<real>0.2</real>
+					<key>HasOwnHealth</key>
+					<true/>
+					<key>Health</key>
+					<integer>100</integer>
+				</dict>
+				<dict>
+					<key>FollowingEnabled</key>
+					<false/>
+					<key>BaseFrame</key>
+					<string>character</string>
+					<key>Speed</key>
+					<integer>5</integer>
+					<key>StartLocation</key>
+					<string>{ 100 , 0 }</string>
+					<key>UseForCollisions</key>
+					<true/>
+					<key>CollisionBodyType</key>
+					<string>circle</string>
+					<key>CollisionBodyCoversWhatPercent</key>
+					<integer>1</integer>
+					<key>DebugBody</key>
+					<false/>
+					<key>FPS</key>
+					<integer>20</integer>
+					<key>UseRestingFrames</key>
+					<true/>
+					<key>RestingAtlasFile</key>
+					<string>still</string>
+					<key>RestingFrames</key>
+					<array>
+						<string>still_frame1</string>
+						<string>still_frame2</string>
+						<string>still_frame3</string>
+						<string>still_frame4</string>
+						<string>still_frame3</string>
+						<string>still_frame2</string>
+						<string>still_frame1</string>
+					</array>
+					<key>UseFrontViewFrames</key>
+					<true/>
+					<key>WalkFrontAtlasFile</key>
+					<string>front</string>
+					<key>WalkFrontFrames</key>
+					<array>
+						<string>walk_front1</string>
+						<string>walk_front2</string>
+						<string>walk_front3</string>
+						<string>walk_front4</string>
+						<string>walk_front5</string>
+						<string>walk_front6</string>
+						<string>walk_front7</string>
+						<string>walk_front8</string>
+					</array>
+					<key>UseSideViewFrames</key>
+					<true/>
+					<key>WalkSideAtlasFile</key>
+					<string>side</string>
+					<key>WalkSideFrames</key>
+					<array>
+						<string>walk_side1</string>
+						<string>walk_side2</string>
+						<string>walk_side3</string>
+						<string>walk_side4</string>
+						<string>walk_side5</string>
+						<string>walk_side6</string>
+						<string>walk_side7</string>
+						<string>walk_side8</string>
+					</array>
+					<key>UseBackViewFrames</key>
+					<true/>
+					<key>WalkBackAtlasFile</key>
+					<string>back</string>
+					<key>WalkBackFrames</key>
+					<array>
+						<string>walk_back1</string>
+						<string>walk_back2</string>
+						<string>walk_back3</string>
+						<string>walk_back4</string>
+						<string>walk_back5</string>
+						<string>walk_back6</string>
+						<string>walk_back7</string>
+						<string>walk_back8</string>
+					</array>
+					<key>DoesAttackWhenNotLeader</key>
+					<true/>
+					<key>UseFrontAttackFrames</key>
+					<true/>
+					<key>FrontAttackAtlasFile</key>
+					<string>front</string>
+					<key>FrontAttackFrames</key>
+					<array>
+						<string>front_attack1</string>
+						<string>front_attack2</string>
+						<string>front_attack3</string>
+						<string>front_attack4</string>
+					</array>
+					<key>UseSideAttackFrames</key>
+					<true/>
+					<key>SideAttackAtlasFile</key>
+					<string>side</string>
+					<key>SideAttackFrames</key>
+					<array>
+						<string>side_attack1</string>
+						<string>side_attack2</string>
+						<string>side_attack3</string>
+						<string>side_attack4</string>
+						<string>side_attack5</string>
+					</array>
+					<key>UseBackAttackFrames</key>
+					<true/>
+					<key>BackAttackAtlasFile</key>
+					<string>back</string>
+					<key>BackAttackFrames</key>
+					<array>
+						<string>back_attack1</string>
+						<string>back_attack2</string>
+						<string>back_attack3</string>
+						<string>back_attack4</string>
+						<string>back_attack5</string>
+					</array>
+					<key>UseAttackParticles</key>
+					<true/>
+					<key>AttackParticleFile</key>
+					<string>Spark</string>
+					<key>ParticlesToEmitt</key>
+					<integer>15</integer>
+					<key>ParticleDelay</key>
+					<real>0.2</real>
+					<key>HasOwnHealth</key>
+					<true/>
+					<key>Health</key>
+					<integer>100</integer>
+				</dict>
+				<dict>
+					<key>FollowingEnabled</key>
+					<false/>
+					<key>BaseFrame</key>
+					<string>blob1</string>
+					<key>Speed</key>
+					<integer>5</integer>
+					<key>StartLocation</key>
+					<string>{ 200 , 0 }</string>
+					<key>UseForCollisions</key>
+					<true/>
+					<key>CollisionBodyType</key>
+					<string>circle</string>
+					<key>CollisionBodyCoversWhatPercent</key>
+					<integer>1</integer>
+					<key>DebugBody</key>
+					<false/>
+					<key>FPS</key>
+					<integer>20</integer>
+					<key>UseRestingFrames</key>
+					<true/>
+					<key>RestingAtlasFile</key>
+					<string>still</string>
+					<key>RestingFrames</key>
+					<array>
+						<string>still_frame1</string>
+						<string>still_frame2</string>
+						<string>still_frame3</string>
+						<string>still_frame4</string>
+						<string>still_frame3</string>
+						<string>still_frame2</string>
+						<string>still_frame1</string>
+					</array>
+					<key>UseFrontViewFrames</key>
+					<true/>
+					<key>WalkFrontAtlasFile</key>
+					<string>blob</string>
+					<key>WalkFrontFrames</key>
+					<array>
+						<string>blob1</string>
+						<string>blob2</string>
+						<string>blob3</string>
+						<string>blob4</string>
+						<string>blob5</string>
+						<string>blob6</string>
+						<string>blob7</string>
+						<string>blob8</string>
+						<string>blob9</string>
+						<string>blob10</string>
+						<string>blob11</string>
+						<string>blob12</string>
+						<string>blob13</string>
+					</array>
+					<key>UseSideViewFrames</key>
+					<false/>
+					<key>WalkSideAtlasFile</key>
+					<string>blob</string>
+					<key>WalkSideFrames</key>
+					<array>
+						<string>walk_side1</string>
+						<string>walk_side2</string>
+						<string>walk_side3</string>
+						<string>walk_side4</string>
+						<string>walk_side5</string>
+						<string>walk_side6</string>
+						<string>walk_side7</string>
+						<string>walk_side8</string>
+					</array>
+					<key>UseBackViewFrames</key>
+					<false/>
+					<key>WalkBackAtlasFile</key>
+					<string>blob</string>
+					<key>WalkBackFrames</key>
+					<array>
+						<string>walk_back1</string>
+						<string>walk_back2</string>
+						<string>walk_back3</string>
+						<string>walk_back4</string>
+						<string>walk_back5</string>
+						<string>walk_back6</string>
+						<string>walk_back7</string>
+						<string>walk_back8</string>
+					</array>
+					<key>DoesAttackWhenNotLeader</key>
+					<true/>
+					<key>UseFrontAttackFrames</key>
+					<true/>
+					<key>FrontAttackAtlasFile</key>
+					<string>blob</string>
+					<key>FrontAttackFrames</key>
+					<array>
+						<string>blob_attack1</string>
+						<string>blob_attack2</string>
+						<string>blob_attack3</string>
+						<string>blob_attack4</string>
+						<string>blob_attack5</string>
+					</array>
+					<key>UseSideAttackFrames</key>
+					<false/>
+					<key>SideAttackAtlasFile</key>
+					<string>blob</string>
+					<key>SideAttackFrames</key>
+					<array>
+						<string>side_attack1</string>
+						<string>side_attack2</string>
+						<string>side_attack3</string>
+						<string>side_attack4</string>
+						<string>side_attack5</string>
+					</array>
+					<key>UseBackAttackFrames</key>
+					<false/>
+					<key>BackAttackAtlasFile</key>
+					<string>blob</string>
+					<key>BackAttackFrames</key>
+					<array>
+						<string>back_attack1</string>
+						<string>back_attack2</string>
+						<string>back_attack3</string>
+						<string>back_attack4</string>
+						<string>back_attack5</string>
+					</array>
+					<key>UseAttackParticles</key>
+					<true/>
+					<key>AttackParticleFile</key>
+					<string>Spark</string>
+					<key>ParticlesToEmitt</key>
+					<integer>15</integer>
+					<key>ParticleDelay</key>
+					<real>0.2</real>
+					<key>HasOwnHealth</key>
+					<true/>
+					<key>Health</key>
+					<integer>100</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>CheckForDifferentPhoneLocations</key>
+			<true/>
+			<key>Coins</key>
+			<array>
+				<dict>
+					<key>BaseFrame</key>
+					<string>coin</string>
+					<key>StartLocation</key>
+					<string>{ -200 , -200 }</string>
+					<key>StartLocationPhone</key>
+					<string>{ -200 , -200 }</string>
+				</dict>
+				<dict>
+					<key>BaseFrame</key>
+					<string>coin</string>
+					<key>StartLocation</key>
+					<string>{ -200 , -100 }</string>
+				</dict>
+				<dict>
+					<key>BaseFrame</key>
+					<string>coin</string>
+					<key>StartLocation</key>
+					<string>{ 400 , -400 }</string>
+				</dict>
+			</array>
+			<key>Background</key>
+			<string>level_map1</string>
+			<key>ShrinkBackgroundBorderBy</key>
+			<real>0.9</real>
+			<key>DebugBoundary</key>
+			<true/>
+			<key>FollowDelay</key>
+			<real>0.5</real>
+			<key>LevelBorderCausesDamageBy</key>
+			<integer>50</integer>
+			<key>UseDelayedFollow</key>
+			<string>YES</string>
+			<key>Characters</key>
+			<array>
+				<dict>
+					<key>FollowingEnabled</key>
+					<true/>
+					<key>BaseFrame</key>
+					<string>character</string>
+					<key>Speed</key>
+					<integer>5</integer>
+					<key>StartLocation</key>
+					<string>{ 0 , 0 }</string>
+					<key>StartLocationPhone</key>
 					<string>{ 0 , 0 }</string>
 					<key>UseForCollisions</key>
 					<true/>
