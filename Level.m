@@ -12,6 +12,8 @@
 #import "StartMenu.h"
 #import "Coin.h"
 
+static int levelCount = 0;
+
 @interface Level () {
     
     UISwipeGestureRecognizer* swipeGestureLeft;
@@ -27,6 +29,9 @@
     
     int currentLevel;
     int levelBorderCausesDamageBy;
+    int coinsInlevel;
+    int coinsCollected;
+    
     unsigned char charactersInWorld; // can be 0 to 255
     
     SKNode* myWorld;
@@ -36,7 +41,9 @@
     
     BOOL gameHasBegun;
     BOOL useDelayedFollow;
+    
     float followDelay;
+    
     __block unsigned char place;
 
 }
@@ -48,8 +55,9 @@
     if (self = [super initWithSize:size]) {
         
         gameHasBegun      = NO;
-        currentLevel      = 0;// later on we will create a singleton to hold game data that is independent of this class
+        currentLevel      = levelCount;// later on we will create a singleton to hold game data that is independent of this class
         charactersInWorld = 0;
+        coinsCollected    = 0;
         
         [self setUpScene];
         [self performSelector:@selector(setUpCharacters) withObject:nil afterDelay:2.0];
@@ -151,6 +159,10 @@
 #pragma mark SetUp Coins
 
 -(void) setUpCoins:(NSArray*)theArray {
+    
+    coinsInlevel = [theArray count];
+    NSLog(@"Coins in Level %i", coinsInlevel);
+    
     int c = 0;
     while (c < [theArray count]) {
         NSDictionary *coinDict = [NSDictionary dictionaryWithDictionary:[theArray objectAtIndex:c]];
@@ -566,10 +578,12 @@
         
         if (firstBody.categoryBitMask == coinCategory) {
             Coin* coin = (Coin*) firstBody.node;
+            [self testForCoins];
             [coin removeFromParent];
             
         } else if (secondBody.categoryBitMask == coinCategory) {
             Coin* coin = (Coin*) secondBody.node;
+            [self testForCoins];
             [coin removeFromParent];
             
         }
@@ -613,6 +627,26 @@
     SKScene* nextScene = [[StartMenu alloc] initWithSize:self.size];
     SKTransition* fade =  [SKTransition fadeWithColor:[SKColor blackColor] duration:1.5];
     [self.view presentScene:nextScene transition:fade];
+}
+
+#pragma mark ADVANCE LEVEL
+
+-(void) advanceLevel {
+    
+    self.paused        = YES;
+    gameHasBegun       = NO;
+    SKScene* nextScene = [[Level alloc] initWithSize:self.size];
+    SKTransition* fade = [SKTransition fadeWithColor:[SKColor blackColor] duration:1.5];
+    [self.view presentScene:nextScene transition:fade];
+    
+}
+
+-(void) testForCoins {
+    coinsCollected++;
+    if (coinsCollected == coinsInlevel) {
+        [self advanceLevel];
+    }
+    
 }
 
 #pragma mark Camera Center
