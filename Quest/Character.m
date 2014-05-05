@@ -661,7 +661,8 @@ CGFloat RadiansToDegrees(CGFloat radians)
 #pragma mark LEADER stuff
 
 -(void) makeLeader {
-    
+//TODO: if leader dies and myWorld finds the 2nd character after leader, not the first one than the 1st moves to wall
+//probably should pass in the PLACE value to enumerate by that or something like that..
     if (_changingLeaderUpOnDeath == YES) {
         currentDirection         = noDirection;
         _changingLeaderUpOnDeath = NO;

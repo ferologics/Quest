@@ -29,7 +29,7 @@ static int levelCount = 0;
     
     int currentLevel;
     int levelBorderCausesDamageBy;
-    int coinsInlevel;
+    unsigned long coinsInlevel;
     int coinsCollected;
     
     unsigned char charactersInWorld; // can be 0 to 255
@@ -66,7 +66,7 @@ static int levelCount = 0;
         
         checkForDifferentPhoneLocations = NO;
         gameHasBegun                    = NO;
-        currentLevel                    = levelCount;// later on we will create a singleton to hold game data that is independent of this class
+        currentLevel                    = levelCount; // used for lvling up
         charactersInWorld               = 0;
         coinsCollected                  = 0;
         
@@ -185,12 +185,12 @@ static int levelCount = 0;
 -(void) setUpCoins:(NSArray*)theArray {
     
     coinsInlevel = [theArray count];
-    NSLog(@"Coins in Level %i", coinsInlevel);
+    NSLog(@"Coins in Level %lu", coinsInlevel);
     
     int c = 0;
     while (c < [theArray count]) {
         NSDictionary *coinDict = [NSDictionary dictionaryWithDictionary:[theArray objectAtIndex:c]];
-        NSString* baseString = [NSString stringWithString:[coinDict objectForKeyedSubscript:@"BaseFrame"]];
+        NSString* baseString   = [NSString stringWithString:[coinDict objectForKeyedSubscript:@"BaseFrame"]];
         CGPoint coinLocation;
         
         if (checkForDifferentPhoneLocations == YES) {
@@ -223,7 +223,7 @@ static int levelCount = 0;
     
     [myWorld addChild:pathShape];
 }
-
+//tu som skoncil
 #pragma mark Gestures
 
 -(void) didMoveToView:(SKView *)view {
