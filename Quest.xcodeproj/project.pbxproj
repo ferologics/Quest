@@ -51,6 +51,7 @@
 		070B03921912E49700F4367E /* Coin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coin.m; sourceTree = "<group>"; };
 		07179E79190E89BA008786FC /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
 		07179E7A190E89BA008786FC /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		075FB437193E50700006F1F5 /* Quest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Quest-Bridging-Header.h"; sourceTree = "<group>"; };
 		07630B6D1912925200F4F1C0 /* DeathFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeathFire.sks; sourceTree = "<group>"; };
 		07B5065A184F80D400D15168 /* Quest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07B5065D184F80D400D15168 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -118,6 +119,7 @@
 				07B5068C184F80D500D15168 /* QuestTests */,
 				07B5065C184F80D400D15168 /* Frameworks */,
 				07B5065B184F80D400D15168 /* Products */,
+				075FB437193E50700006F1F5 /* Quest-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -432,11 +434,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Quest/Quest-Prefix.pch";
 				INFOPLIST_FILE = "Quest/Quest-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Quest-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -447,11 +453,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Quest/Quest-Prefix.pch";
 				INFOPLIST_FILE = "Quest/Quest-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Quest-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
