@@ -13,3 +13,5 @@ For now it has just basic methods like folow, turn left, right, up, down, plus
 some animations, particles, and few othe gestures... later on I'll add enemies, etc...
 
 This game works on iPad AND iPhone (universal).
+
+Feel free to fork!
